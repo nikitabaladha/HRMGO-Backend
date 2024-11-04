@@ -1,46 +1,59 @@
-// controller/User/signup.js
+// controllers/User/signup.js
 
 const User = require("../../models/User");
+const saltFunction = require("../../validators/saltFunction.js");
 
-const signup = async (req, res) => {
+const signupValidationSchema = require("../../validators/signupValidationSchema.js");
+
+async function signup(req, res) {
   try {
-    console.log("Request received at create endpoint");
-    console.log("Request body:", req.body);
-
     const { firstName, lastName, email, password, role } = req.body;
 
-    // Check if required fields are present
-    if (!firstName || !lastName || !email || !password || !role) {
-      return res.status(400).json({ message: "All fields are required" });
+    const { error } = signupValidationSchema.validate(req.body);
+
+    if (error?.details?.length) {
+      const errorMessages = error.details[0].message;
+      return res.status(400).json({ message: errorMessages });
     }
 
-    const newUser = new User({
+    let isExistingUser = await User.findOne({ email });
+
+    if (isExistingUser) {
+      return res
+        .status(400)
+        .json({ hasError: true, message: "User already exists" });
+    }
+
+    const { hashedPassword, salt } = saltFunction.hashPassword(password);
+
+    const user = await User.create({
       firstName,
       lastName,
       email,
-      password,
+      password: hashedPassword,
       role,
+      salt,
     });
 
-    await newUser.save();
+    delete user.password;
+    delete user.salt;
 
-    console.log("User saved to database:", newUser);
-
-    res.status(201).json({
-      message: "User created successfully",
-      user: newUser,
+    return res.status(200).json({
+      hasError: false,
+      message: "Signup successfully",
+      data: {
+        firstName: user.firstName,
+        lastName: user.lastName,
+        email: user.email,
+        role: user.role,
+        _id: user.id,
+      },
     });
   } catch (error) {
-    console.error("Error in create controller:", error.message);
+    console.error(error.message);
 
-    if (error.code === 11000) {
-      return res.status(400).json({ message: "Email already exists" });
-    }
-
-    res
-      .status(500)
-      .json({ message: "Error creating user", error: error.message });
+    return res.status(500).json({ message: "Server error" });
   }
-};
+}
 
 module.exports = signup;
