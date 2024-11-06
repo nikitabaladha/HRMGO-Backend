@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const meetingSchema = new mongoose.Schema(
+const MeetingSchema = new mongoose.Schema(
   {
     userId: {
       type: mongoose.Schema.Types.ObjectId,
@@ -14,6 +14,6 @@ const meetingSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-const Meeting = mongoose.model("Meeting", meetingSchema);
+const Meeting = mongoose.model("Meeting", MeetingSchema);
 
 module.exports = Meeting;

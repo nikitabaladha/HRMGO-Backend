@@ -8,6 +8,9 @@ const getAllMeeting = require("./Meeting/getAll");
 const createAttendance = require("./Attendance/create");
 const getAllAttendance = require("./Attendance/getAll");
 
+const createAnnouncement = require("./Announcement/create");
+const getAllAnnouncement = require("./Announcement/getAll");
+
 module.exports = {
   createDashboardMetric,
   getAllDashboardMetric,
@@ -17,4 +20,7 @@ module.exports = {
 
   createAttendance,
   getAllAttendance,
+
+  createAnnouncement,
+  getAllAnnouncement,
 };
