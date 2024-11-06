@@ -1,4 +1,4 @@
-// controllers/login.js
+// controllers/User/login.js
 
 require("dotenv").config();
 const jwt = require("jsonwebtoken");
@@ -50,6 +50,7 @@ async function login(req, res) {
         lastName: user.lastName,
         email: user.email,
         role: user.role,
+        password: user.password,
       },
       jwtSecret,
       {
@@ -60,7 +61,6 @@ async function login(req, res) {
     return res.status(200).json({
       token,
       userDetails: {
-        id: user.id,
         firstName: user.firstName,
         lastName: user.lastName,
         role: user.role,

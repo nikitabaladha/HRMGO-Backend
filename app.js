@@ -6,9 +6,19 @@ const bodyParser = require("body-parser");
 
 const connectDB = require("./config/db");
 
+const cors = require("cors");
+
 const app = express();
 
 connectDB();
+
+// Allow requests from frontend
+app.use(
+  cors({
+    origin: "http://localhost:3000",
+    methods: ["GET", "POST", "PUT", "DELETE"],
+  })
+);
 
 app.use(bodyParser.json());
 
