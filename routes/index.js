@@ -8,6 +8,7 @@ const meetingRoutes = require("./meeting");
 const attendanceRoutes = require("./attendance");
 const announcementRoutes = require("./announcement");
 const calendarRoutes = require("./calendar");
+const incomeExpenseReportRoutes = require("./incomeExpenseReport");
 
 module.exports = (app) => {
   app.post("/api/signup", signup);
@@ -22,4 +23,6 @@ module.exports = (app) => {
   app.use("/api", announcementRoutes); // This mounts the announcementRoutes routes
 
   app.use("/api", calendarRoutes); // This mounts the calendarRoutes routes
+
+  app.use("/api", incomeExpenseReportRoutes); // This mounts the incomeExpenseReportRoutes routes
 };

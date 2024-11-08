@@ -13,6 +13,9 @@ const getAllAnnouncement = require("./Announcement/getAll");
 
 const createCalendar = require("./Calendar/create");
 const getAllCalendar = require("./Calendar/getAll");
+
+const createIncomeExpenseReport = require("./IncomeExpenseReport/create");
+const getAllIncomeExpenseReport = require("./IncomeExpenseReport/getAll");
 module.exports = {
   createDashboardMetric,
   getAllDashboardMetric,
@@ -28,4 +31,7 @@ module.exports = {
 
   createCalendar,
   getAllCalendar,
+
+  createIncomeExpenseReport,
+  getAllIncomeExpenseReport,
 };
