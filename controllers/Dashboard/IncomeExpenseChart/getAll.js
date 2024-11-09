@@ -1,41 +1,59 @@
-// HRMGO-Backend\controllers\Dashboard\IncomeExpenseChart\getAll.js
-
 const IncomeExpenseChart = require("../../../models/IncomeExpenseChart");
 
 async function getAll(req, res) {
   try {
-    const userId = req.user.id;
+    const { start_month, end_month } = req.query;
 
-    // Fetch IncomeExpenseCharts for the user and sort by categories date
-    const incomeExpenseCharts = await IncomeExpenseChart.find({ userId }).sort({
-      categories: 1,
-    });
-
-    if (!incomeExpenseCharts.length) {
-      return res.status(404).json({
+    if (!start_month || !end_month) {
+      return res.status(400).json({
         hasError: true,
-        message: "No Income Expense Chart found for this user",
+        message: "Start month and end month are required",
       });
     }
 
-    // Prepare data for the frontend chart
-    const categories = incomeExpenseCharts.map((item) =>
-      new Date(item.categories).toLocaleDateString("en-US", {
-        month: "short",
-        year: "numeric",
-      })
-    );
-    const incomeData = incomeExpenseCharts.map((item) => item.incomeData);
-    const expenseData = incomeExpenseCharts.map((item) => item.expenseData);
+    // Convert the months to Date objects
+    const startDate = new Date(start_month);
+    const endDate = new Date(end_month);
+    endDate.setMonth(endDate.getMonth() + 1);
+
+    // Fetch the data for the selected date range
+    const data = await IncomeExpenseChart.aggregate([
+      {
+        $match: {
+          categories: {
+            $gte: startDate,
+            $lt: endDate,
+          },
+        },
+      },
+      {
+        $project: {
+          _id: 0,
+          categories: 1,
+          incomeData: 1,
+          expenseData: 1,
+        },
+      },
+      {
+        $sort: { categories: 1 }, // Sort by categories (month)
+      },
+    ]);
+
+    if (!data.length) {
+      return res.status(404).json({
+        hasError: true,
+        message: "No data found for the selected date range",
+      });
+    }
 
     return res.status(200).json({
       hasError: false,
-      message: "Income Expense Charts fetched successfully",
-      data: { categories, incomeData, expenseData },
+      message: "Income Expense Chart fetched successfully",
+      data: data,
     });
   } catch (error) {
-    console.error("Error fetching IncomeExpenseCharts:", error.message);
-    return res.status(500).json({ message: "Server error" });
+    console.error("Error fetching IncomeExpenseChart data:", error.message);
+    return res.status(500).json({ hasError: true, message: "Server error" });
   }
 }
 

@@ -11,6 +11,7 @@ const IncomeExpenseChartSchema = new mongoose.Schema(
     categories: {
       type: Date,
       required: true,
+      // here data will be like
     },
     incomeData: {
       type: Number,
