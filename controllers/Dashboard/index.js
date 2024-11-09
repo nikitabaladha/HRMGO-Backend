@@ -16,6 +16,10 @@ const getAllCalendar = require("./Calendar/getAll");
 
 const createIncomeExpenseReport = require("./IncomeExpenseReport/create");
 const getAllIncomeExpenseReport = require("./IncomeExpenseReport/getAll");
+
+const createIncomeExpenseChart = require("./IncomeExpenseChart/create");
+const getAllIncomeExpenseChart = require("./IncomeExpenseChart/getAll");
+
 module.exports = {
   createDashboardMetric,
   getAllDashboardMetric,
@@ -34,4 +38,7 @@ module.exports = {
 
   createIncomeExpenseReport,
   getAllIncomeExpenseReport,
+
+  createIncomeExpenseChart,
+  getAllIncomeExpenseChart,
 };

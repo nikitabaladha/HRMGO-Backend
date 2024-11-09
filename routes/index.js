@@ -9,6 +9,7 @@ const attendanceRoutes = require("./attendance");
 const announcementRoutes = require("./announcement");
 const calendarRoutes = require("./calendar");
 const incomeExpenseReportRoutes = require("./incomeExpenseReport");
+const incomeExpenseChartRoutes = require("./incomeExpenseChart");
 
 module.exports = (app) => {
   app.post("/api/signup", signup);
@@ -25,4 +26,6 @@ module.exports = (app) => {
   app.use("/api", calendarRoutes); // This mounts the calendarRoutes routes
 
   app.use("/api", incomeExpenseReportRoutes); // This mounts the incomeExpenseReportRoutes routes
+
+  app.use("/api", incomeExpenseChartRoutes); // This mounts the incomeExpenseChartRoutes routes
 };
