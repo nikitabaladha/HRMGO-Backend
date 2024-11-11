@@ -23,7 +23,7 @@ async function getAll(req, res) {
 
     return res.status(200).json({
       message: "Employees retrieved successfully!",
-      employees: employeeData,
+      data: employeeData,
     });
   } catch (error) {
     console.error("Error retrieving employees:", error);

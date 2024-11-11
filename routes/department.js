@@ -9,7 +9,7 @@ const DepartmentCreate = require("../controllers/branch-Department/Department/cr
 const DepartmentGetAll = require("../controllers/branch-Department/Department/getAll");
 
 // Define routes
-router.post("/department", Middleware, DepartmentCreate.create);
+router.post("/department", Middleware, DepartmentCreate);
 router.get("/department-get-all", Middleware, DepartmentGetAll);
 
 module.exports = router;
