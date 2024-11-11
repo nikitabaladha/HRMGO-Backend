@@ -15,6 +15,8 @@ const departmentRoutes = require("./department");
 const employeeRoutes = require("./employee");
 const manageLeaveRoutes = require("./manageLeave");
 
+const timeSheetRoutes = require("./timeSheet");
+
 module.exports = (app) => {
   app.post("/api/signup", signup);
   app.post("/api/login", login);
@@ -38,4 +40,6 @@ module.exports = (app) => {
   app.use("/api", employeeRoutes); // This mounts the employeeRoutes routes
 
   app.use("/api", manageLeaveRoutes); // This mounts the manageLeaveRoutes routes
+
+  app.use("/api", timeSheetRoutes); // This mounts the timeSheetRoutes routes
 };
