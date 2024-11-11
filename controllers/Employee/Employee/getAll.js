@@ -2,26 +2,34 @@ const Employee = require("../../../models/Employee");
 
 async function getAll(req, res) {
   try {
-    // Fetch all employees
-    const employees = await Employee.find();
+    const employees = await Employee.find()
+      .populate("branchId", "branchName") // Populate branchId with the branchName field from the Branch collection
+      .populate("departmentId", "departmentName"); // Populate departmentId with the departmentName field from the Department collection
 
-    if (employees.length === 0) {
-      return res.status(404).json({
-        hasError: true,
-        message: "No Employee found",
-      });
-    }
+    // Map the employees to the desired format
+    const employeeData = employees.map((employee) => {
+      return {
+        _id: employee._id,
+        id: employee.id,
+        name: employee.name,
+        email: employee.email,
+        branchName: employee.branchId?.branchName, // Extract branchName from populated branchId
+        departmentName: employee.departmentId?.departmentName, // Extract departmentName from populated departmentId
+        designation: employee.designation,
+        joiningDate: employee.joiningDate,
+        __v: employee.__v,
+      };
+    });
 
     return res.status(200).json({
-      hasError: false,
-      message: "Employees fetched successfully",
-      data: employees,
+      message: "Employees retrieved successfully!",
+      employees: employeeData,
     });
   } catch (error) {
-    console.error("Error fetching employees:", error.message);
+    console.error("Error retrieving employees:", error);
     return res.status(500).json({
-      hasError: true,
-      message: "Server error",
+      message: "Failed to retrieve employees.",
+      error: error.message,
     });
   }
 }
