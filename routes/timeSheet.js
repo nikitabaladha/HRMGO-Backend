@@ -12,6 +12,6 @@ const {
 
 // Define routes
 router.post("/timesheet", Middleware, createTimeSheet);
-router.get("/timesheet-get-all", Middleware, getAllTimeSheet, createTimeSheet);
+router.get("/timesheet-get-all", Middleware, getAllTimeSheet);
 
 module.exports = router;

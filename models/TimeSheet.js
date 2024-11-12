@@ -19,5 +19,8 @@ const TimeSheetSchema = new mongoose.Schema({
   },
 });
 
+// Create a unique index on employeeId and date
+TimeSheetSchema.index({ employeeId: 1, date: 1 }, { unique: true });
+
 const TimeSheet = mongoose.model("TimeSheet", TimeSheetSchema);
 module.exports = TimeSheet;

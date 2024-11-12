@@ -17,7 +17,7 @@ async function getAll(req, res) {
     endDate.setMonth(endDate.getMonth() + 1);
 
     // Fetch the data for the selected date range
-    const data = await IncomeExpenseChart.aggregate([
+    const incomeExpenseData = await IncomeExpenseChart.aggregate([
       {
         $match: {
           categories: {
@@ -39,7 +39,7 @@ async function getAll(req, res) {
       },
     ]);
 
-    if (!data.length) {
+    if (!incomeExpenseData.length) {
       return res.status(404).json({
         hasError: true,
         message: "No data found for the selected date range",
@@ -49,7 +49,7 @@ async function getAll(req, res) {
     return res.status(200).json({
       hasError: false,
       message: "Income Expense Chart fetched successfully",
-      data: data,
+      data: incomeExpenseData,
     });
   } catch (error) {
     console.error("Error fetching IncomeExpenseChart data:", error.message);
@@ -57,4 +57,4 @@ async function getAll(req, res) {
   }
 }
 
-module.exports = { getAll };
+module.exports = getAll;

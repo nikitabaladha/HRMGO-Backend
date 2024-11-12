@@ -32,4 +32,4 @@ async function deleteById(req, res) {
   }
 }
 
-module.exports = { deleteById };
+module.exports = deleteById;

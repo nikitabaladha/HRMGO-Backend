@@ -39,6 +39,7 @@ async function create(req, res) {
     return res.status(201).json({
       message: "Employee created successfully!",
       employee: newEmployee,
+      hasError: false,
     });
   } catch (error) {
     console.error("Error creating employee:", error);
@@ -49,4 +50,4 @@ async function create(req, res) {
   }
 }
 
-module.exports = { create };
+module.exports = create;

@@ -24,9 +24,10 @@ async function updateById(req, res) {
 
     // Check if the current user is the owner of the metric (optional validation)
     if (existingMetric.userId.toString() !== userId) {
-      return res
-        .status(403)
-        .json({ message: "You are not authorized to update this metric" });
+      return res.status(403).json({
+        hasError: true,
+        message: "You are not authorized to update this metric",
+      });
     }
 
     // Update the fields of the dashboard metric
@@ -48,4 +49,4 @@ async function updateById(req, res) {
   }
 }
 
-module.exports = { updateById };
+module.exports = updateById;

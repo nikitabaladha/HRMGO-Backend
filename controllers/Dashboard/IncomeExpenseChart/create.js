@@ -6,7 +6,7 @@ const IncomeExpenseChartValidator = require("../../../validators/DashboardValida
 async function create(req, res) {
   try {
     const { incomeData, expenseData, categories } = req.body;
-    const userId = req.user.id; // Assuming `user` is added to `req` through middleware (e.g., auth middleware)
+    const userId = req.user.id;
 
     // Validate the IncomeExpenseChart data using the validator
     const { error } = IncomeExpenseChartValidator.validate(req.body);
@@ -38,4 +38,4 @@ async function create(req, res) {
   }
 }
 
-module.exports = { create };
+module.exports = create;

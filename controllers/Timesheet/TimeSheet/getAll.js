@@ -8,7 +8,10 @@ async function getAll(req, res) {
     // Map the response data to include all required fields with employee name
     const timeSheetData = timeSheets.map((timeSheet) => {
       return {
-        employeeName: timeSheet.employeeId.name, // Get employee name from populated data
+        // employeeName: timeSheet.employeeId.name,
+        employeeName: timeSheet.employeeId
+          ? timeSheet.employeeId.name
+          : "Unknown Employee",
         date: timeSheet.date,
         remark: timeSheet.remark,
         hours: timeSheet.hours,
@@ -18,6 +21,7 @@ async function getAll(req, res) {
     return res.status(200).json({
       message: "TimeSheets retrieved successfully!",
       data: timeSheetData,
+      hasError: false,
     });
   } catch (error) {
     console.error("Error retrieving timeSheets:", error);

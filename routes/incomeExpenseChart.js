@@ -4,20 +4,17 @@ const express = require("express");
 const router = express.Router();
 const Middleware = require("../middleware/index.js");
 
-// Controller imports
-const IncomeExpenseChartCreate = require("../controllers/Dashboard/IncomeExpenseChart/create");
-const IncomeExpenseChartGetAll = require("../controllers/Dashboard/IncomeExpenseChart/getAll");
+const {
+  createIncomeExpenseChart,
+  getAllIncomeExpenseChart,
+} = require("../controllers/Dashboard");
 
 // Define routes
-router.post(
-  "/income-expense-chart",
-  Middleware,
-  IncomeExpenseChartCreate.create
-);
+router.post("/income-expense-chart", Middleware, createIncomeExpenseChart);
 router.get(
   "/income-expense-chart-get-all",
   Middleware,
-  IncomeExpenseChartGetAll.getAll
+  getAllIncomeExpenseChart
 );
 
 module.exports = router;

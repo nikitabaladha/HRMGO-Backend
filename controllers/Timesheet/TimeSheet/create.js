@@ -5,33 +5,45 @@ async function create(req, res) {
   try {
     // Validate the incoming request body using Joi schema
     const { error } = TimeSheetValidator.validate(req.body);
-
     if (error?.details?.length) {
       const errorMessages = error.details.map((err) => err.message).join(", ");
       return res.status(400).json({ message: errorMessages });
     }
 
-    // Destructure the required fields from the request body
     const { employeeId, date, remark, hours } = req.body;
 
-    // Create a new TimeSheet instance
+    // Normalize date to midnight in UTC for daily uniqueness check
+    const normalizedDate = new Date(date);
+    normalizedDate.setUTCHours(0, 0, 0, 0);
+
+    // Check if there is an existing entry for the same employee and date
+    const existingTimeSheet = await TimeSheet.findOne({
+      employeeId,
+      date: normalizedDate, // Using normalized date for the query
+    });
+
+    if (existingTimeSheet) {
+      return res.status(400).json({
+        message: "An entry for this employee already exists on the given date.",
+      });
+    }
+
+    // Create new time sheet entry if no existing entry is found
     const newTimeSheet = new TimeSheet({
-      employeeId, // Use employeeId if it's required
-      date, // Ensure "date" field is used (not "Date")
+      employeeId,
+      date: normalizedDate,
       remark,
       hours,
     });
 
-    // Save the new timeSheet to the database
     await newTimeSheet.save();
 
-    // Respond with a success message
     return res.status(201).json({
       message: "TimeSheet created successfully!",
       timeSheet: newTimeSheet,
+      hasError: false,
     });
   } catch (error) {
-    // Handle errors that may occur during the process
     console.error("Error creating timeSheet:", error);
     return res.status(500).json({
       message: "Failed to create timeSheet.",
