@@ -8,13 +8,12 @@ async function getAll(req, res) {
     // Map the response data to include all required fields with employee name
     const timeSheetData = timeSheets.map((timeSheet) => {
       return {
-        // employeeName: timeSheet.employeeId.name,
-        employeeName: timeSheet.employeeId
-          ? timeSheet.employeeId.name
-          : "Unknown Employee",
+        employeeName: timeSheet.employeeId.name,
         date: timeSheet.date,
         remark: timeSheet.remark,
         hours: timeSheet.hours,
+        id: timeSheet._id,
+        employeeId: timeSheet.employeeId._id,
       };
     });
 
