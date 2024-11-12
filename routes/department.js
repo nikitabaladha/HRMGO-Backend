@@ -5,7 +5,7 @@ const Middleware = require("../middleware/index.js");
 const {
   createDepartment,
   getAllDepartment,
-} = require("../Controllers/Branch-Department");
+} = require("../controllers/Branch-Department");
 
 router.post("/department", Middleware, createDepartment);
 router.get("/department-get-all", Middleware, getAllDepartment);
