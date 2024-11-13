@@ -28,6 +28,16 @@ async function create(req, res) {
     });
   } catch (error) {
     console.error("Error creating department:", error);
+
+    // Handle unique constraint violation
+    if (error.code === 11000) {
+      return res.status(400).json({
+        message:
+          "A department with the same name already exists in this branch.",
+        hasError: true,
+      });
+    }
+
     return res.status(500).json({
       message: "Failed to create department.",
       error: error.message,

@@ -8,10 +8,12 @@ const DepartmentSchema = new mongoose.Schema({
   },
   branchId: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "Branch", // Reference to the Branch collection
+    ref: "Branch",
     required: true,
   },
 });
+
+DepartmentSchema.index({ branchId: 1, departmentName: 1 }, { unique: true });
 
 // Department Model
 const Department = mongoose.model("Department", DepartmentSchema);

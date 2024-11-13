@@ -21,7 +21,7 @@ const EmployeeSchema = new mongoose.Schema({
   },
   departmentId: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "Department", // Reference to the Department collection
+    ref: "Department",
     required: true,
   },
   designation: {
