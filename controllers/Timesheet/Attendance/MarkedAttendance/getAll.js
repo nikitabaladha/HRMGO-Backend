@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const MarkedAttendance = require("../../../../models/MarkedAttendance");
 const moment = require("moment");
+
 async function getAll(req, res) {
   try {
     // Extract query parameters
@@ -12,7 +13,7 @@ async function getAll(req, res) {
     // Filter by branch if provided
     if (branch) filter["branchId"] = new mongoose.Types.ObjectId(branch);
 
-    // // Filter by department if provided
+    // Filter by department if provided
     if (department)
       filter["departmentId"] = new mongoose.Types.ObjectId(department);
 
@@ -48,10 +49,14 @@ async function getAll(req, res) {
         const departmentName =
           attendance.employeeId.departmentId.departmentName;
 
-        // Format date and times using moment.js
-        const formattedDate = moment(attendance.date).format("MMM D, YYYY");
-        const formattedClockIn = moment(attendance.clockIn).format("h:mm A");
-        const formattedClockOut = moment(attendance.clockOut).format("h:mm A");
+        // Format date and times using moment.js with UTC to ensure consistency
+        const formattedDate = moment.utc(attendance.date).format("MMM D, YYYY");
+        const formattedClockIn = moment
+          .utc(attendance.clockIn)
+          .format("h:mm A");
+        const formattedClockOut = moment
+          .utc(attendance.clockOut)
+          .format("h:mm A");
         const formattedLate = moment.utc(attendance.late).format("HH:mm:ss");
         const formattedEarlyLeaving = moment
           .utc(attendance.earlyLeaving)
@@ -73,8 +78,6 @@ async function getAll(req, res) {
           overtime: formattedOvertime,
         };
       });
-
-    console.log(markedAttendanceData);
 
     return res.status(200).json({
       message: "Marked Attendance retrieved successfully!",

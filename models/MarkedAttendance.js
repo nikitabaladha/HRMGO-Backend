@@ -39,6 +39,8 @@ const MarkedAttendanceSchema = new Schema({
   },
 });
 
+MarkedAttendanceSchema.index({ employeeId: 1, date: 1 }, { unique: true });
+
 // Create a model for attendance
 const MarkedAttendance = mongoose.model(
   "MarkedAttendance",
