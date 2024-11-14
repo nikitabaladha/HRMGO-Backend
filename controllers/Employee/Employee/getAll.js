@@ -1,10 +1,12 @@
+// HRMGO-Backend\controllers\Employee\Employee\getAll.js
+
 const Employee = require("../../../models/Employee");
 
 async function getAll(req, res) {
   try {
     const employees = await Employee.find()
-      .populate("branchId", "branchName") // Populate branchId with the branchName field from the Branch collection
-      .populate("departmentId", "departmentName"); // Populate departmentId with the departmentName field from the Department collection
+      .populate("branchId", "branchName")
+      .populate("departmentId", "departmentName");
 
     // Map the employees to the desired format
     const employeeData = employees.map((employee) => {
