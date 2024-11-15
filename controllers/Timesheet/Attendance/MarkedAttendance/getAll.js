@@ -4,43 +4,37 @@ const moment = require("moment");
 
 async function getAll(req, res) {
   try {
-    // Extract query parameters
     const { branch, department, date, type } = req.query;
-
-    // Build query filter object
     const filter = {};
 
-    // Filter by branch if provided
     if (branch) filter["branchId"] = new mongoose.Types.ObjectId(branch);
-
-    // Filter by department if provided
     if (department)
       filter["departmentId"] = new mongoose.Types.ObjectId(department);
 
     let dateFilter = {};
 
     if (date) {
-      const dateFilterFor = type === "Daily" ? "day" : "month";
-      const startOfMonth = moment(date).startOf(dateFilterFor).toISOString();
-      const endOfMonth = moment(date).endOf(dateFilterFor).toISOString();
-      dateFilter.date = { $gte: startOfMonth, $lte: endOfMonth };
+      if (type === "daily") {
+        const startOfDay = moment(date).startOf("day").toISOString();
+        const endOfDay = moment(date).endOf("day").toISOString();
+        dateFilter.date = { $gte: startOfDay, $lte: endOfDay };
+      } else if (type === "monthly") {
+        const startOfMonth = moment(date).startOf("month").toISOString();
+        const endOfMonth = moment(date).endOf("month").toISOString();
+        dateFilter.date = { $gte: startOfMonth, $lte: endOfMonth };
+      }
     }
 
-    // Populate the employee details with branch and department
     const markedAttendance = await MarkedAttendance.find(dateFilter)
       .populate({
-        path: "employeeId", // Populate the employeeId field
-        select: "name branchId departmentId", // Fields to select from the employee document
+        path: "employeeId",
+        select: "name branchId departmentId",
         match: { ...filter },
-        populate: [
-          { path: "branchId" }, // Populate the branchId field
-          { path: "departmentId" }, // Populate the departmentId field
-        ],
+        populate: [{ path: "branchId" }, { path: "departmentId" }],
       })
       .lean()
       .exec();
 
-    // Map the response data to include all required fields with employee details
     const markedAttendanceData = markedAttendance
       .filter((attendance) => attendance.employeeId != null)
       .map((attendance) => {
@@ -49,7 +43,6 @@ async function getAll(req, res) {
         const departmentName =
           attendance.employeeId.departmentId.departmentName;
 
-        // Format date and times using moment.js with UTC to ensure consistency
         const formattedDate = moment.utc(attendance.date).format("MMM D, YYYY");
         const formattedClockIn = moment
           .utc(attendance.clockIn)
