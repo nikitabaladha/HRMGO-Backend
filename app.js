@@ -10,6 +10,8 @@ const cors = require("cors");
 
 const app = express();
 
+app.use(bodyParser.urlencoded({ extended: true }));
+
 connectDB();
 
 // Allow requests from frontend

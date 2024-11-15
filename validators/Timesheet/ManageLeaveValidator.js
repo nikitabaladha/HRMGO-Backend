@@ -5,15 +5,15 @@ const ManageLeaveValidator = Joi.object({
     .pattern(/^[0-9a-fA-F]{24}$/)
     .required()
     .messages({
-      "string.pattern.base": "Invalid employeeId format",
+      "string.pattern.base":
+        "Invalid employeeId format (must be a 24 character MongoDB ObjectId)",
       "any.required": "Employee ID is required",
     }),
   leaveType: Joi.string()
-    .valid("Casual Leave", "Medical Leave", "Other Leave")
+    .valid("Casual Leave", "Medical Leave")
     .required()
     .messages({
-      "any.only":
-        "Leave type must be one of Casual Leave, Medical Leave, or Other Leave",
+      "any.only": "Leave type must be one of: Casual Leave or Medical Leave",
       "any.required": "Leave type is required",
     }),
   appliedOn: Joi.date().required().messages({
@@ -37,16 +37,9 @@ const ManageLeaveValidator = Joi.object({
   }),
   reason: Joi.string().min(5).required().messages({
     "string.base": "Reason must be a string",
-    "string.min": "Reason must be at least 5 characters",
+    "string.min": "Reason must be at least 5 characters long",
     "any.required": "Reason is required",
   }),
-  status: Joi.string()
-    .valid("Approved", "Reject", "Pending")
-    .required()
-    .messages({
-      "any.only": "Status must be one of Approved, Reject, or Pending",
-      "any.required": "Status is required",
-    }),
 });
 
 module.exports = ManageLeaveValidator;

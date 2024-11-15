@@ -16,9 +16,14 @@ const ManageLeaveSchema = new mongoose.Schema({
   status: {
     type: String,
     enum: ["Approved", "Reject", "Pending"],
-    required: true,
+    default: "Pending",
   },
 });
+
+ManageLeaveSchema.index(
+  { employeeId: 1, startDate: 1, endDate: 1 },
+  { unique: true }
+);
 
 const ManageLeave = mongoose.model("ManageLeave", ManageLeaveSchema);
 module.exports = ManageLeave;

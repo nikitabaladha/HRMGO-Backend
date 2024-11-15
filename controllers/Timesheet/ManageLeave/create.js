@@ -19,8 +19,20 @@ async function create(req, res) {
       endDate,
       totalDays,
       reason,
-      status,
     } = req.body;
+
+    const existingLeave = await ManageLeave.findOne({
+      employeeId,
+      startDate,
+      endDate,
+    });
+
+    if (existingLeave) {
+      return res.status(400).json({
+        message: "You have already applied for leave for the specified dates.",
+        hasError: true,
+      });
+    }
 
     // Create a new employee instance
     const newManageLeave = new ManageLeave({
@@ -31,7 +43,6 @@ async function create(req, res) {
       endDate,
       totalDays,
       reason,
-      status,
     });
 
     // Save the employee to the database

@@ -11,7 +11,7 @@ async function getAll(req, res) {
     // Map the response data to include all required fields with employee name
     const manageLeaveData = manageLeaves.map((manageLeave) => {
       return {
-        employeeName: manageLeave.employeeId.name, // Get employee name from populated data
+        employeeName: manageLeave.employeeId.name,
         leaveType: manageLeave.leaveType,
         appliedOn: manageLeave.appliedOn,
         startDate: manageLeave.startDate,
