@@ -10,6 +10,7 @@ const {
   getAllManageLeave,
   updateStatus,
   updateStatusCancelled,
+  updateByLeaveId,
 } = require("../controllers/Timesheet");
 
 // Define routes
@@ -17,5 +18,6 @@ router.post("/manage-leave", Middleware, createManageLeave);
 router.get("/manage-leave-get-all", Middleware, getAllManageLeave);
 router.put("/manage-leave-update-status/:id", Middleware, updateStatus);
 router.put("/manage-leave-delete/:id", Middleware, updateStatusCancelled);
+router.put("/manage-leave-update/:id", Middleware, updateByLeaveId);
 
 module.exports = router;

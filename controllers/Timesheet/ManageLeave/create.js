@@ -4,7 +4,7 @@ const ManageLeave = require("../../../models/ManageLeave");
 
 async function create(req, res) {
   try {
-    const { error } = ManageLeaveValidator.validate(req.body);
+    const { error } = ManageLeaveValidator.validateCreate(req.body);
 
     if (error?.details?.length) {
       const errorMessages = error.details.map((err) => err.message).join(", ");

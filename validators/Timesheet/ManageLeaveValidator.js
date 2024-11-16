@@ -1,14 +1,6 @@
 const Joi = require("joi");
 
-const ManageLeaveValidator = Joi.object({
-  employeeId: Joi.string()
-    .pattern(/^[0-9a-fA-F]{24}$/)
-    .required()
-    .messages({
-      "string.pattern.base":
-        "Invalid employeeId format (must be a 24 character MongoDB ObjectId)",
-      "any.required": "Employee ID is required",
-    }),
+const baseSchema = Joi.object({
   leaveType: Joi.string()
     .valid("Casual Leave", "Medical Leave")
     .required()
@@ -41,5 +33,23 @@ const ManageLeaveValidator = Joi.object({
     "any.required": "Reason is required",
   }),
 });
+
+const createSchema = baseSchema.keys({
+  employeeId: Joi.string()
+    .pattern(/^[0-9a-fA-F]{24}$/)
+    .required()
+    .messages({
+      "string.pattern.base":
+        "Invalid employeeId format (must be a 24 character MongoDB ObjectId)",
+      "any.required": "Employee ID is required",
+    }),
+});
+
+const updateSchema = baseSchema; // No `employeeId` validation for update
+
+const ManageLeaveValidator = {
+  validateCreate: (data) => createSchema.validate(data, { abortEarly: false }),
+  validateUpdate: (data) => updateSchema.validate(data, { abortEarly: false }),
+};
 
 module.exports = ManageLeaveValidator;
