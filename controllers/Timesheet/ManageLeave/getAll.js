@@ -2,15 +2,15 @@ const ManageLeave = require("../../../models/ManageLeave");
 
 async function getAll(req, res) {
   try {
-    // Populate the employeeId with the name field from the Employee model
-    const manageLeaves = await ManageLeave.find().populate(
-      "employeeId",
-      "name"
-    );
+    // Find leaves where the status is not 'Cancelled'
+    const manageLeaves = await ManageLeave.find({
+      status: { $ne: "Cancelled" },
+    }).populate("employeeId", "name");
 
     // Map the response data to include all required fields with employee name
     const manageLeaveData = manageLeaves.map((manageLeave) => {
       return {
+        leaveId: manageLeave._id,
         employeeName: manageLeave.employeeId.name,
         leaveType: manageLeave.leaveType,
         appliedOn: manageLeave.appliedOn,
@@ -29,7 +29,7 @@ async function getAll(req, res) {
   } catch (error) {
     console.error("Error retrieving manageLeaves:", error);
     return res.status(500).json({
-      message: "Failed to retrieve manage Leaves.",
+      message: "Failed to retrieve manage leaves.",
       error: error.message,
     });
   }

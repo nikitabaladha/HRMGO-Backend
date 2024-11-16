@@ -7,11 +7,11 @@ async function updateStatus(req, res) {
     const { status } = req.body; // Assuming the new status is in the request body
 
     // Validate the new status
-    const validStatuses = ["Approved", "Rejected", "Pending"];
+    const validStatuses = ["Approved", "Reject", "Pending"];
     if (!validStatuses.includes(status)) {
       return res.status(400).json({
         message:
-          "Invalid status. Status must be one of: Approved, Rejected, Pending.",
+          "Invalid status. Status must be one of: Approved, Reject, Pending.",
         hasError: true,
       });
     }
