@@ -3,7 +3,6 @@ const ManageLeave = require("../../../models/ManageLeave");
 
 async function updateByLeaveId(req, res) {
   try {
-    // Extract ID from request parameters
     const { id } = req.params;
 
     // Validate the incoming data
@@ -13,11 +12,7 @@ async function updateByLeaveId(req, res) {
       return res.status(400).json({ message: errorMessages });
     }
 
-    // Extract data from request body (excluding employeeId)
-    const { leaveType, appliedOn, startDate, endDate, totalDays, reason } =
-      req.body;
-
-    // Check if the leave entry exists
+    // Fetch the existing leave entry
     const existingLeave = await ManageLeave.findById(id);
     if (!existingLeave) {
       return res.status(404).json({
@@ -26,9 +21,18 @@ async function updateByLeaveId(req, res) {
       });
     }
 
-    // Check for conflicts with other leave entries for the same employee and dates
+    // Extract fields from request body, or use existing values
+    const leaveType = req.body.leaveType || existingLeave.leaveType;
+    const startDate = req.body.startDate || existingLeave.startDate;
+    const endDate = req.body.endDate || existingLeave.endDate;
+    const reason = req.body.reason || existingLeave.reason;
+
+    // Calculate totalDays automatically (if both startDate and endDate are provided)
+    const totalDays = calculateTotalDays(startDate, endDate);
+
+    // Check for conflicts with other leave entries
     const conflictingLeave = await ManageLeave.findOne({
-      _id: { $ne: id }, // Exclude the current leave entry
+      _id: { $ne: id },
       employeeId: existingLeave.employeeId,
       startDate,
       endDate,
@@ -41,15 +45,14 @@ async function updateByLeaveId(req, res) {
       });
     }
 
-    // Update the leave entry (excluding employeeId)
+    // Update fields in the existing leave entry
     existingLeave.leaveType = leaveType;
-    existingLeave.appliedOn = appliedOn;
     existingLeave.startDate = startDate;
     existingLeave.endDate = endDate;
     existingLeave.totalDays = totalDays;
     existingLeave.reason = reason;
 
-    // Save the updated leave entry to the database
+    // Save the updated leave entry
     await existingLeave.save();
 
     return res.status(200).json({
@@ -64,6 +67,15 @@ async function updateByLeaveId(req, res) {
       error: error.message,
     });
   }
+}
+
+// Function to calculate total days between startDate and endDate
+function calculateTotalDays(startDate, endDate) {
+  const start = new Date(startDate);
+  const end = new Date(endDate);
+  const timeDiff = end - start;
+  const days = timeDiff / (1000 * 3600 * 24); // Convert milliseconds to days
+  return days + 1; // Include both start and end date in the total
 }
 
 module.exports = updateByLeaveId;
