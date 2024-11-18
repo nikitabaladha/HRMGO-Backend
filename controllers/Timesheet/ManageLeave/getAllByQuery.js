@@ -41,25 +41,37 @@ async function getAllByQuery(req, res) {
       .lean()
       .exec();
 
-    const manageLeaveData = manageLeave
+    // Grouping by employeeId
+    const groupedData = manageLeave
       .filter((leave) => leave.employeeId != null)
-      .map((leave) => ({
-        employeeId: leave.employeeId.id,
-        //I want this employee id here
-        employeeName: leave.employeeId.name,
-        branchName: leave.employeeId.branchId.branchName,
-        departmentName: leave.employeeId.departmentId.departmentName,
-        startDate: moment.utc(leave.startDate).format("MMM D, YYYY"),
-        endDate: moment.utc(leave.endDate).format("MMM D, YYYY"),
-        totalDays: leave.totalDays,
-        leaveType: leave.leaveType,
-        reason: leave.reason,
-        status: leave.status,
-      }));
+      .reduce((acc, leave) => {
+        const empId = leave.employeeId.id;
+        if (!acc[empId]) {
+          acc[empId] = {
+            employeeId: empId,
+            employeeName: leave.employeeId.name,
+            branchName: leave.employeeId.branchId.branchName,
+            departmentName: leave.employeeId.departmentId.departmentName,
+            leaves: [],
+          };
+        }
+        acc[empId].leaves.push({
+          startDate: moment.utc(leave.startDate).format("MMM D, YYYY"),
+          endDate: moment.utc(leave.endDate).format("MMM D, YYYY"),
+          totalDays: leave.totalDays,
+          leaveType: leave.leaveType,
+          reason: leave.reason,
+          status: leave.status,
+        });
+        return acc;
+      }, {});
+
+    // Convert grouped object to an array
+    const responseData = Object.values(groupedData);
 
     return res.status(200).json({
       message: "Manage leave retrieved successfully!",
-      data: manageLeaveData,
+      data: responseData,
     });
   } catch (error) {
     console.error("Error retrieving manage leave:", error);
