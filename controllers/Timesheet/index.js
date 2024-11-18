@@ -4,6 +4,7 @@ const getAllManageLeave = require("./ManageLeave/getAll");
 const updateStatus = require("./ManageLeave/updateStatus");
 const updateStatusCancelled = require("./ManageLeave/updateStatusCancelled");
 const updateByLeaveId = require("./ManageLeave/updateByLeaveId");
+const getAllByQuery = require("./ManageLeave/getAllByQuery");
 
 const createTimeSheet = require("./TimeSheet/create");
 const getAllTimeSheet = require("./TimeSheet/getAll");
@@ -17,6 +18,7 @@ module.exports = {
   updateStatus,
   updateStatusCancelled,
   updateByLeaveId,
+  getAllByQuery,
 
   createTimeSheet,
   getAllTimeSheet,

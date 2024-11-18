@@ -4,6 +4,7 @@ const EmployeeSchema = new mongoose.Schema({
   id: {
     type: String,
     unique: true,
+    // i want this id
   },
   name: {
     type: String,
