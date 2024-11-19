@@ -2,49 +2,27 @@ const mongoose = require("mongoose");
 const moment = require("moment");
 const MarkedAttendance = require("../../../../models/MarkedAttendance");
 
-async function getAllByQuery(req, res) {
+async function getAllForCurrentMonth(req, res) {
   try {
-    const { branch, department, month, employee } = req.query;
-
     // Initialize filters
     const filter = {};
     const dateFilter = {};
 
-    // Filter by month (ensure it's a valid date)
-    if (month) {
-      const startOfMonth = moment(month).startOf("month").toDate();
-      const endOfMonth = moment(month).endOf("month").toDate();
-      dateFilter.date = { $gte: startOfMonth, $lte: endOfMonth };
-    }
+    // Get the current month start and end dates
+    const startOfMonth = moment().startOf("month").toDate();
+    const endOfMonth = moment().endOf("month").toDate();
 
-    // If multiple employees are provided, filter by multiple employee IDs
-    if (employee) {
-      // Check if `employee` is an array or a single value
-      const employeeIds = Array.isArray(employee) ? employee : [employee];
-      filter["employeeId"] = {
-        $in: employeeIds.map((emp) => new mongoose.Types.ObjectId(emp)),
-      };
-    }
+    // Apply the date filter for current month
+    dateFilter.date = { $gte: startOfMonth, $lte: endOfMonth };
 
-    // Retrieve marked attendance based on the filters
+    // Retrieve marked attendance for the current month (no branch or department filter)
     const markedAttendanceRecords = await MarkedAttendance.find({
       ...filter,
       ...dateFilter,
     })
       .populate({
         path: "employeeId", // Populate the employeeId field
-        select: "name branchId departmentId", // Select only relevant fields from Employee
-        match: {
-          // Filter the employee based on branchId and departmentId
-          branchId: branch ? new mongoose.Types.ObjectId(branch) : undefined,
-          departmentId: department
-            ? new mongoose.Types.ObjectId(department)
-            : undefined,
-        },
-        populate: [
-          { path: "branchId", select: "branchName" }, // Populate branch details
-          { path: "departmentId", select: "departmentName" }, // Populate department details
-        ],
+        select: "name", // Select only the relevant fields (name in this case)
       })
       .lean()
       .exec();
@@ -57,20 +35,12 @@ async function getAllByQuery(req, res) {
       .reduce((acc, attendance) => {
         const employeeId = attendance.employeeId._id.toString();
         const employeeName = attendance.employeeId.name;
-        const branchName = attendance.employeeId.branchId
-          ? attendance.employeeId.branchId.branchName
-          : "";
-        const departmentName = attendance.employeeId.departmentId
-          ? attendance.employeeId.departmentId.departmentName
-          : "";
 
         // Initialize the employee group if not already present
         if (!acc[employeeId]) {
           acc[employeeId] = {
             employeeId,
             employeeName,
-            branchName,
-            departmentName,
             attendance: [],
           };
         }
@@ -93,19 +63,10 @@ async function getAllByQuery(req, res) {
     // Convert grouped attendance to an array
     const groupedAttendanceData = Object.values(groupedAttendance);
 
-    // If a single employee is selected, return only that employee's data
-    if (employee && groupedAttendanceData.length === 1) {
-      return res.status(200).json({
-        message: "Employee's Marked Attendance retrieved successfully!",
-        totalEmployees: 1,
-        data: groupedAttendanceData[0],
-        hasError: false,
-      });
-    }
-
     // Response data structure
     return res.status(200).json({
-      message: "Grouped Marked Attendance retrieved successfully!",
+      message:
+        "Grouped Marked Attendance for Current Month retrieved successfully!",
       totalEmployees: groupedAttendanceData.length,
       data: groupedAttendanceData,
       hasError: false,
@@ -120,4 +81,4 @@ async function getAllByQuery(req, res) {
   }
 }
 
-module.exports = getAllByQuery;
+module.exports = getAllForCurrentMonth;

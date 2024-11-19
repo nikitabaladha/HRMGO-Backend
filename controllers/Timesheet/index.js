@@ -1,4 +1,3 @@
-// Use require instead of import
 const createManageLeave = require("./ManageLeave/create");
 const getAllManageLeave = require("./ManageLeave/getAll");
 const updateStatus = require("./ManageLeave/updateStatus");
@@ -12,6 +11,7 @@ const getAllTimeSheet = require("./TimeSheet/getAll");
 const createMarkedAttendance = require("./Attendance/MarkedAttendance/create");
 const getAllMarkedAttendance = require("./Attendance/MarkedAttendance/getAll");
 const getAllMarkedAttendanceByQuery = require("./Attendance/MarkedAttendance/getAllByQuery");
+const getAllForCurrentMonth = require("./Attendance/MarkedAttendance/getAllForCurrentMonth");
 
 module.exports = {
   createManageLeave,
@@ -20,6 +20,7 @@ module.exports = {
   updateStatusCancelled,
   updateByLeaveId,
   getAllByQuery,
+  getAllForCurrentMonth,
 
   createTimeSheet,
   getAllTimeSheet,
