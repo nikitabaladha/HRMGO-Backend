@@ -50,13 +50,11 @@ async function getAll(req, res) {
         const formattedClockOut = moment
           .utc(attendance.clockOut)
           .format("h:mm A");
-        const formattedLate = moment.utc(attendance.late).format("HH:mm:ss");
-        const formattedEarlyLeaving = moment
-          .utc(attendance.earlyLeaving)
-          .format("HH:mm:ss");
-        const formattedOvertime = moment
-          .utc(attendance.overtime)
-          .format("HH:mm:ss");
+        //  do for late early leaving and overtime
+
+        const formattedLate = attendance.late || "00:00:00";
+        const formattedEarlyLeaving = attendance.earlyLeaving || "00:00:00";
+        const formattedOvertime = attendance.overtime || "00:00:00";
 
         return {
           employeeName,

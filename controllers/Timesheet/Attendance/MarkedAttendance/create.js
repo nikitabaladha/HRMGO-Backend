@@ -1,6 +1,17 @@
 const MarkedAttendance = require("../../../../models/MarkedAttendance");
 const MarkedAttendanceValidator = require("../../../../validators/Timesheet/MarkedAttendance");
 
+function formatDuration(durationMs) {
+  const totalSeconds = Math.floor(durationMs / 1000);
+  const hours = Math.floor(totalSeconds / 3600);
+  const minutes = Math.floor((totalSeconds % 3600) / 60);
+  const seconds = totalSeconds % 60;
+  return `${String(hours).padStart(2, "0")}:${String(minutes).padStart(
+    2,
+    "0"
+  )}:${String(seconds).padStart(2, "0")}`;
+}
+
 async function create(req, res) {
   try {
     const records = Array.isArray(req.body) ? req.body : [req.body];
@@ -16,26 +27,53 @@ async function create(req, res) {
         return res.status(400).json({ message: errorMessages });
       }
 
-      const {
+      const { employeeId, date, status, clockIn, clockOut } = value;
+
+      const formattedDate = new Date(date);
+      const formattedClockIn = new Date(clockIn);
+      const formattedClockOut = new Date(clockOut);
+
+      // Construct ideal clock-in and clock-out times
+      const idealClockIn = new Date(formattedDate);
+      idealClockIn.setUTCHours(9, 0, 0, 0); // 09:00:00 UTC
+
+      const idealClockOut = new Date(formattedDate);
+      idealClockOut.setUTCHours(18, 0, 0, 0); // 18:00:00 UTC
+
+      // Calculate durations
+      const lateDuration =
+        formattedClockIn > idealClockIn ? formattedClockIn - idealClockIn : 0;
+
+      const earlyLeavingDuration =
+        formattedClockOut < idealClockOut
+          ? idealClockOut - formattedClockOut
+          : 0;
+
+      const earlyArrivalDuration =
+        formattedClockIn < idealClockIn ? idealClockIn - formattedClockIn : 0;
+
+      const lateStayDuration =
+        formattedClockOut > idealClockOut
+          ? formattedClockOut - idealClockOut
+          : 0;
+
+      const overtimeDuration = earlyArrivalDuration + lateStayDuration;
+
+      // Format durations
+      const late = formatDuration(lateDuration);
+      const earlyLeaving = formatDuration(earlyLeavingDuration);
+      const overtime = formatDuration(overtimeDuration);
+
+      // Create a new MarkedAttendance record
+      const newMarkedAttendance = new MarkedAttendance({
         employeeId,
-        date,
+        date: formattedDate,
         status,
-        clockIn,
-        clockOut,
+        clockIn: formattedClockIn,
+        clockOut: formattedClockOut,
         late,
         earlyLeaving,
         overtime,
-      } = value;
-
-      const newMarkedAttendance = new MarkedAttendance({
-        employeeId,
-        date: new Date(date), // Convert string to date if needed
-        status,
-        clockIn: clockIn ? new Date(clockIn) : null,
-        clockOut: clockOut ? new Date(clockOut) : null,
-        late: late ? new Date(late) : null,
-        earlyLeaving: earlyLeaving ? new Date(earlyLeaving) : null,
-        overtime: overtime ? new Date(overtime) : null,
       });
 
       await newMarkedAttendance.save();

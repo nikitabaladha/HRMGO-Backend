@@ -26,16 +26,13 @@ const MarkedAttendanceSchema = new Schema({
     required: true,
   },
   late: {
-    type: Date,
-    default: new Date("1970-01-01T00:00:00Z"),
+    type: String,
   },
   earlyLeaving: {
-    type: Date,
-    default: new Date("1970-01-01T00:00:00Z"),
+    type: String,
   },
   overtime: {
-    type: Date,
-    default: new Date("1970-01-01T00:00:00Z"),
+    type: String,
   },
 });
 
