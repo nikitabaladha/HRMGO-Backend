@@ -1,3 +1,4 @@
+// HRMGO-Backend\models\Department.js
 const mongoose = require("mongoose");
 
 // Department Schema

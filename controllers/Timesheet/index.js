@@ -11,6 +11,7 @@ const getAllTimeSheet = require("./TimeSheet/getAll");
 
 const createMarkedAttendance = require("./Attendance/MarkedAttendance/create");
 const getAllMarkedAttendance = require("./Attendance/MarkedAttendance/getAll");
+const getAllMarkedAttendanceByQuery = require("./Attendance/MarkedAttendance/getAllByQuery");
 
 module.exports = {
   createManageLeave,
@@ -25,4 +26,5 @@ module.exports = {
 
   createMarkedAttendance,
   getAllMarkedAttendance,
+  getAllMarkedAttendanceByQuery,
 };

@@ -1,3 +1,4 @@
+// HRMGO-Backend\models\Branch.js
 const mongoose = require("mongoose");
 
 // Branch Schema

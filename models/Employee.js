@@ -1,10 +1,10 @@
+// HRMGO-Backend\models\Employee.js
 const mongoose = require("mongoose");
 
 const EmployeeSchema = new mongoose.Schema({
   id: {
     type: String,
     unique: true,
-    // i want this id
   },
   name: {
     type: String,
