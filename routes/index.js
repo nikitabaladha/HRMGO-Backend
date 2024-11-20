@@ -19,6 +19,8 @@ const manageLeaveRoutes = require("./manageLeave");
 const timeSheetRoutes = require("./timeSheet");
 const MarkedAttendance = require("./markedAttendance");
 
+const performanceRoutes = require("./performance");
+
 module.exports = (app) => {
   app.post("/api/signup", signup);
   app.post("/api/login", login);
@@ -46,4 +48,6 @@ module.exports = (app) => {
   app.use("/api", timeSheetRoutes); // This mounts the timeSheetRoutes routes
 
   app.use("/api", MarkedAttendance); // This mounts the MarkedAttendance routes
+
+  app.use("/api", performanceRoutes); // This mounts the performanceRoutes routes
 };

@@ -23,9 +23,9 @@ const PerformanceSchema = new Schema(
       max: 5,
       set: (v) => Math.round(v * 100) / 100,
     },
-    addedBy: {
+    addedById: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Admin",
+      ref: "User",
       required: true,
     },
     createdAt: {
