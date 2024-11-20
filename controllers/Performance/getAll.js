@@ -74,7 +74,7 @@ async function getAll(req, res) {
 
     return res.status(200).json({
       message: "Performance records fetched successfully!",
-      performances,
+      data: performances,
       hasError: false,
     });
   } catch (error) {
