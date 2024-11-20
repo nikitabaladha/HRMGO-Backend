@@ -7,6 +7,7 @@ const {
   getAllMarkedAttendance,
   getAllMarkedAttendanceByQuery,
   getAllForCurrentMonth,
+  getAttendance,
 } = require("../controllers/Timesheet");
 
 router.post("/marked-attendance", Middleware, createMarkedAttendance);
@@ -21,5 +22,6 @@ router.get(
   Middleware,
   getAllForCurrentMonth
 );
+router.get("/marked-attendance-get-attendance", Middleware, getAttendance);
 
 module.exports = router;
