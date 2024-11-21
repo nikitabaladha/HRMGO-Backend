@@ -6,6 +6,8 @@ const getAllCompetencyList = require("./CompetencyList/getAll");
 
 const createIndicator = require("./Indicator/create");
 const getAllIndicator = require("./Indicator/getAll");
+const getById = require("./Indicator/getById");
+const deleteById = require("./Indicator/deleteById");
 
 module.exports = {
   createCompetency,
@@ -14,4 +16,6 @@ module.exports = {
   getAllCompetencyList,
   createIndicator,
   getAllIndicator,
+  getById,
+  deleteById,
 };

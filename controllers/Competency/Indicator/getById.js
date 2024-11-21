@@ -1,25 +1,23 @@
 const Indicator = require("../../../models/Indicator");
-const User = require("../../../models/User");
-const Branch = require("../../../models/Branch");
-const Department = require("../../../models/Department");
-const Designation = require("../../../models/Designation");
 
-async function getAll(req, res) {
+async function getById(req, res) {
   try {
-    // Fetch all indicators and populate the references for branchId, departmentId, designationId, and addedById
-    const indicators = await Indicator.find()
+    const { id } = req.params; // Get the indicatorId from the route parameter
+
+    // Find the indicator by its ID and populate the necessary fields
+    const indicator = await Indicator.findById(id)
       .populate("branchId", "branchName")
       .populate("departmentId", "departmentName")
       .populate("designationId", "designationName")
       .populate("addedById", "firstName lastName")
       .select("-__v");
 
-    if (indicators.length === 0) {
-      return res.status(404).json({ message: "No indicators found" });
+    if (!indicator) {
+      return res.status(404).json({ message: "Indicator not found" });
     }
 
-    // Map the indicators to include relevant information and return the response
-    const indicatorData = indicators.map((indicator) => ({
+    // Prepare the indicator data to send in the response
+    const indicatorData = {
       id: indicator._id,
       branch: indicator.branchId.branchName,
       department: indicator.departmentId.departmentName,
@@ -29,19 +27,19 @@ async function getAll(req, res) {
       overAllRating: indicator.overAllRating,
       createdAt: indicator.createdAt,
       updatedAt: indicator.updatedAt,
-    }));
+    };
 
     return res.status(200).json({
-      message: "Indicators retrieved successfully!",
+      message: "Indicator retrieved successfully!",
       data: indicatorData,
     });
   } catch (error) {
-    console.error("Error retrieving indicators:", error);
+    console.error("Error retrieving indicator:", error);
     return res.status(500).json({
-      message: "Failed to retrieve indicators.",
+      message: "Failed to retrieve indicator.",
       error: error.message,
     });
   }
 }
 
-module.exports = getAll;
+module.exports = getById;
