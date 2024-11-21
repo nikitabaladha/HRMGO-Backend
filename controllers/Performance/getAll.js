@@ -20,7 +20,7 @@ async function getAll(req, res) {
       },
       {
         $lookup: {
-          from: "branches", // Name of the Branch collection
+          from: "branches",
           localField: "employeeDetails.branchId",
           foreignField: "_id",
           as: "branchDetails",
@@ -31,7 +31,7 @@ async function getAll(req, res) {
       },
       {
         $lookup: {
-          from: "departments", // Name of the Department collection
+          from: "departments",
           localField: "employeeDetails.departmentId",
           foreignField: "_id",
           as: "departmentDetails",
@@ -42,7 +42,7 @@ async function getAll(req, res) {
       },
       {
         $lookup: {
-          from: "users", // Name of the User collection
+          from: "users",
           localField: "addedById",
           foreignField: "_id",
           as: "addedByDetails",

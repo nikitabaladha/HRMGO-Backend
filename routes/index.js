@@ -12,6 +12,7 @@ const incomeExpenseChartRoutes = require("./incomeExpenseChart");
 
 const branchRoutes = require("./branch");
 const departmentRoutes = require("./department");
+const designationRoutes = require("./designation");
 
 const employeeRoutes = require("./employee");
 
@@ -20,6 +21,10 @@ const timeSheetRoutes = require("./timeSheet");
 const MarkedAttendance = require("./markedAttendance");
 
 const performanceRoutes = require("./performance");
+const competencyRoutes = require("./competency");
+const competencyListRoutes = require("./competencyList");
+
+const indicatorRoutes = require("./indicator");
 
 module.exports = (app) => {
   app.post("/api/signup", signup);
@@ -41,6 +46,8 @@ module.exports = (app) => {
 
   app.use("/api", departmentRoutes); // This mounts the departmentRoutes routes
 
+  app.use("/api", designationRoutes); // This mounts the designationRoutes routes
+
   app.use("/api", employeeRoutes); // This mounts the employeeRoutes routes
 
   app.use("/api", manageLeaveRoutes); // This mounts the manageLeaveRoutes routes
@@ -50,4 +57,10 @@ module.exports = (app) => {
   app.use("/api", MarkedAttendance); // This mounts the MarkedAttendance routes
 
   app.use("/api", performanceRoutes); // This mounts the performanceRoutes routes
+
+  app.use("/api", competencyRoutes); // This mounts the performanceRoutes routes with
+
+  app.use("/api", competencyListRoutes); // This mounts the performanceRoutes routes with
+
+  app.use("/api", indicatorRoutes);
 };

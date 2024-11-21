@@ -6,6 +6,9 @@ const createDepartment = require("./Department/create");
 const getAllDepartment = require("./Department/getAll");
 const getAllDepartmentByBranchId = require("./Department/getAllByBranchId");
 
+const createDesignation = require("./Designation/create");
+const getAllDesignation = require("./Designation/getAll");
+
 module.exports = {
   createBranch,
   getAllBranch,
@@ -13,4 +16,7 @@ module.exports = {
   createDepartment,
   getAllDepartment,
   getAllDepartmentByBranchId,
+
+  createDesignation,
+  getAllDesignation,
 };

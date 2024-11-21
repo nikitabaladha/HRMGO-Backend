@@ -9,7 +9,7 @@ const EmployeeValidator = Joi.object({
 
   departmentId: Joi.string().required(),
 
-  designation: Joi.string().min(3).max(100).required(),
+  designationId: Joi.string().required(),
 
   joiningDate: Joi.date().required(),
 });

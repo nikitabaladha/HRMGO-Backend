@@ -10,7 +10,7 @@ async function create(req, res) {
       return res.status(400).json({ message: errorMessages });
     }
 
-    const { name, email, branchId, departmentId, designation, joiningDate } =
+    const { name, email, branchId, departmentId, designationId, joiningDate } =
       req.body;
 
     // Manually generate the employee ID before saving
@@ -29,7 +29,7 @@ async function create(req, res) {
       email,
       branchId,
       departmentId,
-      designation,
+      designationId,
       joiningDate,
     });
 

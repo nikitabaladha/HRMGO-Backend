@@ -6,7 +6,8 @@ async function getAll(req, res) {
   try {
     const employees = await Employee.find()
       .populate("branchId", "branchName")
-      .populate("departmentId", "departmentName");
+      .populate("departmentId", "departmentName")
+      .populate("designationId", "designationName");
 
     // Map the employees to the desired format
     const employeeData = employees.map((employee) => {
@@ -17,7 +18,7 @@ async function getAll(req, res) {
         email: employee.email,
         branchName: employee.branchId?.branchName, // Extract branchName from populated branchId
         departmentName: employee.departmentId?.departmentName, // Extract departmentName from populated departmentId
-        designation: employee.designation,
+        designationName: employee.designationId?.designationName,
         joiningDate: employee.joiningDate,
         __v: employee.__v,
       };
