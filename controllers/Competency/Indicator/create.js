@@ -1,13 +1,16 @@
 const Indicator = require("../../../models/Indicator");
 const User = require("../../../models/User");
+const Branch = require("../../../models/Branch"); // Assuming Branch model exists
+const Department = require("../../../models/Department"); // Assuming Department model exists
+const Designation = require("../../../models/Designation"); // Assuming Designation model exists
 
 async function create(req, res) {
   try {
     // Destructure the data from the request body
     const {
-      branch,
-      department,
-      designation,
+      branchId,
+      departmentId,
+      designationId,
       addedById,
       competencies,
       overAllRating,
@@ -17,6 +20,24 @@ async function create(req, res) {
     const user = await User.findById(addedById);
     if (!user) {
       return res.status(404).json({ message: "User not found" });
+    }
+
+    // Validate if the branchId exists in the Branch collection
+    const branch = await Branch.findById(branchId);
+    if (!branch) {
+      return res.status(404).json({ message: "Branch not found" });
+    }
+
+    // Validate if the departmentId exists in the Department collection
+    const department = await Department.findById(departmentId);
+    if (!department) {
+      return res.status(404).json({ message: "Department not found" });
+    }
+
+    // Validate if the designationId exists in the Designation collection
+    const designation = await Designation.findById(designationId);
+    if (!designation) {
+      return res.status(404).json({ message: "Designation not found" });
     }
 
     // Validate competencies for each category (organizational, technical, behavioural)
@@ -61,9 +82,9 @@ async function create(req, res) {
 
     // Create a new Indicator object with the provided data
     const indicator = new Indicator({
-      branch,
-      department,
-      designation,
+      branchId,
+      departmentId,
+      designationId,
       addedById,
       competencies,
       overAllRating,
