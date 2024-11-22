@@ -40,6 +40,7 @@ const indicatorSchema = new mongoose.Schema(
           },
         ],
         required: true,
+        _id: false,
       },
       technical: {
         type: [
@@ -47,7 +48,7 @@ const indicatorSchema = new mongoose.Schema(
             name: {
               type: String,
               required: true,
-              enum: ["Allocating Resources"], // Fixed competencies for Technical
+              enum: ["Allocating Resources"],
             },
             rating: {
               type: Number,
@@ -58,6 +59,7 @@ const indicatorSchema = new mongoose.Schema(
           },
         ],
         required: true,
+        _id: false,
       },
       behavioural: {
         type: [
@@ -65,7 +67,7 @@ const indicatorSchema = new mongoose.Schema(
             name: {
               type: String,
               required: true,
-              enum: ["Business Process", "Oral Communication"], // Fixed competencies for Behavioural
+              enum: ["Business Process", "Oral Communication"],
             },
             rating: {
               type: Number,
@@ -76,8 +78,10 @@ const indicatorSchema = new mongoose.Schema(
           },
         ],
         required: true,
+        _id: false,
       },
     },
+
     overAllRating: {
       type: Number,
       // required: true,

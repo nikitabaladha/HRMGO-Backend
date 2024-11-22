@@ -8,6 +8,7 @@ const createIndicator = require("./Indicator/create");
 const getAllIndicator = require("./Indicator/getAll");
 const getById = require("./Indicator/getById");
 const deleteById = require("./Indicator/deleteById");
+const updateIndicator = require("./Indicator/update");
 
 module.exports = {
   createCompetency,
@@ -18,4 +19,5 @@ module.exports = {
   getAllIndicator,
   getById,
   deleteById,
+  updateIndicator,
 };
