@@ -2,40 +2,42 @@ const mongoose = require("mongoose");
 
 const appraisalSchema = new mongoose.Schema(
   {
-    branch: {
-      type: String,
-      required: true, // Branch where the appraisal is taking place
-    },
-    employee: {
-      type: String,
-      required: true, // Employee name
-    },
-    month: {
-      type: String,
-      required: true, // Month of the appraisal
-    },
-    remarks: {
-      type: String, // Optional remarks field
-    },
-    indicator: {
+    branchId: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Indicator", // Reference to the Indicator schema
+      ref: "Branch",
       required: true,
     },
-    appraisalRatings: {
+    employeeId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Employee",
+      required: true,
+    },
+    appraisalDate: {
+      type: Date,
+      required: true,
+    },
+    remarks: {
+      type: String,
+    },
+    indicatorId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Indicator",
+      required: true,
+    },
+    appraisalCompetencies: {
       organizational: {
         type: [
           {
             name: {
               type: String,
               required: true,
-              enum: ["Leadership", "Project Management"], // Fixed competencies for Organizational
+              enum: ["Leadership", "Project Management"],
             },
             rating: {
               type: Number,
               required: true,
               min: 1,
-              max: 5, // Appraisal rating must be between 1 and 5
+              max: 5,
             },
           },
         ],
@@ -47,7 +49,7 @@ const appraisalSchema = new mongoose.Schema(
             name: {
               type: String,
               required: true,
-              enum: ["Allocating Resources"], // Fixed competency for Technical
+              enum: ["Allocating Resources"],
             },
             rating: {
               type: Number,
@@ -65,7 +67,7 @@ const appraisalSchema = new mongoose.Schema(
             name: {
               type: String,
               required: true,
-              enum: ["Business Process", "Oral Communication"], // Fixed competencies for Behavioural
+              enum: ["Business Process", "Oral Communication"],
             },
             rating: {
               type: Number,
@@ -78,13 +80,9 @@ const appraisalSchema = new mongoose.Schema(
         required: true,
       },
     },
-    createdAt: {
-      type: Date,
-      default: Date.now, // Timestamp for when the appraisal is created
-    },
   },
   {
-    timestamps: true, // Automatically add createdAt and updatedAt fields
+    timestamps: true,
   }
 );
 
