@@ -91,13 +91,22 @@ const indicatorSchema = new mongoose.Schema(
     },
     createdAt: {
       type: Date,
-      default: Date.now,
+
+      // default: Date.now,
     },
   },
   {
     timestamps: true,
   }
 );
+
+indicatorSchema.pre("save", function (next) {
+  if (!this.createdAt) {
+    this.createdAt = new Date(); // Set createdAt to current date if not provided
+  }
+  this.createdAt.setUTCHours(0, 0, 0, 0); // Truncate time part
+  next();
+});
 
 // Define a unique index on the combination of fields
 indicatorSchema.index(

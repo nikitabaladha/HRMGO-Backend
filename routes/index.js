@@ -25,6 +25,7 @@ const competencyRoutes = require("./competency");
 const competencyListRoutes = require("./competencyList");
 
 const indicatorRoutes = require("./indicator");
+const appraisalRoutes = require("./appraisal");
 
 module.exports = (app) => {
   app.post("/api/signup", signup);
@@ -63,4 +64,6 @@ module.exports = (app) => {
   app.use("/api", competencyListRoutes); // This mounts the performanceRoutes routes with
 
   app.use("/api", indicatorRoutes);
+
+  app.use("/api", appraisalRoutes);
 };

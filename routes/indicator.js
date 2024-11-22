@@ -9,6 +9,7 @@ const {
   getById,
   deleteById,
   updateIndicator,
+  getByQuery,
 } = require("../controllers/Competency");
 
 // Define routes
@@ -17,5 +18,6 @@ router.get("/indicator", Middleware, getAllIndicator);
 router.get("/indicator/:id", Middleware, getById);
 router.delete("/indicator/:id", Middleware, deleteById);
 router.put("/indicator/:id", Middleware, updateIndicator);
+router.get("/indicator-by-query", Middleware, getByQuery);
 
 module.exports = router;

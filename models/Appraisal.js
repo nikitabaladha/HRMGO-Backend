@@ -24,6 +24,13 @@ const appraisalSchema = new mongoose.Schema(
       ref: "Indicator",
       required: true,
     },
+    overAllRating: {
+      type: Number,
+      // required: true,
+      min: 0,
+      max: 5,
+      set: (v) => Math.round(v * 100) / 100,
+    },
     appraisalCompetencies: {
       organizational: {
         type: [
@@ -42,6 +49,7 @@ const appraisalSchema = new mongoose.Schema(
           },
         ],
         required: true,
+        _id: false,
       },
       technical: {
         type: [
@@ -60,6 +68,7 @@ const appraisalSchema = new mongoose.Schema(
           },
         ],
         required: true,
+        _id: false,
       },
       behavioural: {
         type: [
@@ -78,12 +87,23 @@ const appraisalSchema = new mongoose.Schema(
           },
         ],
         required: true,
+        _id: false,
       },
     },
   },
+
   {
     timestamps: true,
   }
+);
+
+appraisalSchema.index(
+  {
+    employeeId: 1,
+    branchId: 1,
+    appraisalDate: 1,
+  },
+  { unique: true }
 );
 
 const Appraisal = mongoose.model("Appraisal", appraisalSchema);
