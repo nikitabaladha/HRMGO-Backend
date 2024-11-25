@@ -1,7 +1,7 @@
 const Appraisal = require("../../../models/Appraisal");
 const Indicator = require("../../../models/Indicator");
 const Employee = require("../../../models/Employee");
-const Branch = require("../../../models/Branch"); // Assuming Branch model exists
+const Branch = require("../../../models/Branch");
 
 async function create(req, res) {
   try {
@@ -9,11 +9,21 @@ async function create(req, res) {
     const {
       branchId,
       employeeId,
-      appraisalDate,
       remarks,
       indicatorId,
       appraisalCompetencies,
     } = req.body;
+
+    console.log(req.body);
+
+    const currentDate = new Date();
+    const formattedAppraisalDate = new Date(
+      Date.UTC(
+        currentDate.getUTCFullYear(),
+        currentDate.getUTCMonth(),
+        currentDate.getUTCDate()
+      )
+    );
 
     // Validate if the branchId exists in the Branch collection
     const branch = await Branch.findById(branchId);
@@ -99,7 +109,7 @@ async function create(req, res) {
     const appraisal = new Appraisal({
       branchId,
       employeeId,
-      appraisalDate,
+      appraisalDate: formattedAppraisalDate,
       remarks,
       indicatorId,
       appraisalCompetencies,

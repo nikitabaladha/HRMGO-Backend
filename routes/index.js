@@ -20,10 +20,6 @@ const manageLeaveRoutes = require("./manageLeave");
 const timeSheetRoutes = require("./timeSheet");
 const MarkedAttendance = require("./markedAttendance");
 
-const performanceRoutes = require("./performance");
-const competencyRoutes = require("./competency");
-const competencyListRoutes = require("./competencyList");
-
 const indicatorRoutes = require("./indicator");
 const appraisalRoutes = require("./appraisal");
 
@@ -56,12 +52,6 @@ module.exports = (app) => {
   app.use("/api", timeSheetRoutes); // This mounts the timeSheetRoutes routes
 
   app.use("/api", MarkedAttendance); // This mounts the MarkedAttendance routes
-
-  app.use("/api", performanceRoutes); // This mounts the performanceRoutes routes
-
-  app.use("/api", competencyRoutes); // This mounts the performanceRoutes routes with
-
-  app.use("/api", competencyListRoutes); // This mounts the performanceRoutes routes with
 
   app.use("/api", indicatorRoutes);
 

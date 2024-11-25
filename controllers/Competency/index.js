@@ -1,9 +1,3 @@
-const createCompetency = require("./Competency/create");
-const getAllCompetency = require("./Competency/getAll");
-
-const createCompetencyList = require("./CompetencyList/create");
-const getAllCompetencyList = require("./CompetencyList/getAll");
-
 const createIndicator = require("./Indicator/create");
 const getAllIndicator = require("./Indicator/getAll");
 const getById = require("./Indicator/getById");
@@ -13,14 +7,9 @@ const getByQuery = require("./Indicator/getByQuery");
 
 const createAppraisal = require("./Appraisal/create");
 const getAllAppraisal = require("./Appraisal/getAll");
+const appraisalGetById = require("./Appraisal/getById");
 
 module.exports = {
-  createCompetency,
-  getAllCompetency,
-
-  createCompetencyList,
-  getAllCompetencyList,
-
   createIndicator,
   getAllIndicator,
   getById,
@@ -30,4 +19,5 @@ module.exports = {
 
   createAppraisal,
   getAllAppraisal,
+  appraisalGetById,
 };

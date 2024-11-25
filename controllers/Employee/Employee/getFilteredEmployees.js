@@ -20,6 +20,7 @@ async function getFilteredEmployees(req, res) {
     const employees = await Employee.find(query)
       .populate("branchId", "branchName")
       .populate("departmentId", "departmentName")
+      .populate("designationId", "designationName")
       .lean();
     console.log("Fetched Employees:", employees);
 
@@ -55,8 +56,11 @@ async function getFilteredEmployees(req, res) {
         name: employee.name,
         email: employee.email,
         branchName: employee.branchId?.branchName,
+        branchId: employee.branchId._id,
         departmentName: employee.departmentId?.departmentName,
-        designation: employee.designation,
+        departmentId: employee.departmentId._id,
+        designation: employee.designationId?.designationName,
+        designationId: employee.designationId._id,
         joiningDate: employee.joiningDate,
         attendance: attendance
           ? {
