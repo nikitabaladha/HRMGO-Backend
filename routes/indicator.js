@@ -10,7 +10,7 @@ const {
   deleteById,
   updateIndicator,
   getByQuery,
-} = require("../controllers/Competency");
+} = require("../controllers/Performance");
 
 // Define routes
 router.post("/indicator", Middleware, createIndicator);

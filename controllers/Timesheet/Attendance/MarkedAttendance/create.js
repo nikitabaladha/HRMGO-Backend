@@ -33,31 +33,34 @@ async function create(req, res) {
       const formattedClockIn = new Date(clockIn);
       const formattedClockOut = new Date(clockOut);
 
-      // Construct ideal clock-in and clock-out times
+      // Calculate total working hours (clockOut - clockIn)
+      const totalWorkingDuration = formattedClockOut - formattedClockIn;
+      const totalWorkingHours = formatDuration(totalWorkingDuration);
+
+      // Construct ideal clock-in and clock-out times (9:00 AM - 6:00 PM)
       const idealClockIn = new Date(formattedDate);
       idealClockIn.setUTCHours(9, 0, 0, 0); // 09:00:00 UTC
 
       const idealClockOut = new Date(formattedDate);
       idealClockOut.setUTCHours(18, 0, 0, 0); // 18:00:00 UTC
 
-      // Calculate durations
-      const lateDuration =
-        formattedClockIn > idealClockIn ? formattedClockIn - idealClockIn : 0;
+      // Calculate late, early leaving, and overtime
+      let lateDuration = 0;
+      let earlyLeavingDuration = 0;
+      let overtimeDuration = 0;
 
-      const earlyLeavingDuration =
-        formattedClockOut < idealClockOut
-          ? idealClockOut - formattedClockOut
-          : 0;
+      if (formattedClockIn > idealClockIn) {
+        lateDuration = formattedClockIn - idealClockIn;
+      }
 
-      const earlyArrivalDuration =
-        formattedClockIn < idealClockIn ? idealClockIn - formattedClockIn : 0;
+      if (formattedClockOut < idealClockOut) {
+        earlyLeavingDuration = idealClockOut - formattedClockOut;
+      }
 
-      const lateStayDuration =
-        formattedClockOut > idealClockOut
-          ? formattedClockOut - idealClockOut
-          : 0;
-
-      const overtimeDuration = earlyArrivalDuration + lateStayDuration;
+      // Overtime only occurs if the clockOut is after the idealClockOut time
+      if (formattedClockOut > idealClockOut) {
+        overtimeDuration = formattedClockOut - idealClockOut;
+      }
 
       // Format durations
       const late = formatDuration(lateDuration);
@@ -74,6 +77,7 @@ async function create(req, res) {
         late,
         earlyLeaving,
         overtime,
+        hrs: totalWorkingHours,
       });
 
       await newMarkedAttendance.save();

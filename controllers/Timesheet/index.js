@@ -9,10 +9,11 @@ const createTimeSheet = require("./TimeSheet/create");
 const getAllTimeSheet = require("./TimeSheet/getAll");
 
 const createMarkedAttendance = require("./Attendance/MarkedAttendance/create");
-const getAllMarkedAttendance = require("./Attendance/MarkedAttendance/getAll");
+const getAllMarkedAttendanceByDateType = require("./Attendance/MarkedAttendance/getAllByDateType");
 const getAllMarkedAttendanceByQuery = require("./Attendance/MarkedAttendance/getAllByQuery");
 const getAllForCurrentMonth = require("./Attendance/MarkedAttendance/getAllForCurrentMonth");
 const getAttendance = require("./Attendance/MarkedAttendance/getAttendance");
+const getAllAttendance = require("./Attendance/MarkedAttendance/getAll");
 
 module.exports = {
   createManageLeave,
@@ -26,8 +27,9 @@ module.exports = {
   getAllTimeSheet,
 
   createMarkedAttendance,
-  getAllMarkedAttendance,
+  getAllMarkedAttendanceByDateType,
   getAllMarkedAttendanceByQuery,
   getAllForCurrentMonth,
   getAttendance,
+  getAllAttendance,
 };

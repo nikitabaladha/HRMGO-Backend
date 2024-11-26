@@ -4,14 +4,19 @@ const Middleware = require("../middleware/index.js");
 
 const {
   createMarkedAttendance,
-  getAllMarkedAttendance,
+  getAllMarkedAttendanceByDateType,
   getAllMarkedAttendanceByQuery,
   getAllForCurrentMonth,
   getAttendance,
+  getAllAttendance,
 } = require("../controllers/Timesheet");
 
 router.post("/marked-attendance", Middleware, createMarkedAttendance);
-router.get("/marked-attendance-get-all", Middleware, getAllMarkedAttendance);
+router.get(
+  "/marked-attendance-get-all",
+  Middleware,
+  getAllMarkedAttendanceByDateType
+);
 router.get(
   "/marked-attendance-get-all-by-query",
   Middleware,
@@ -23,5 +28,6 @@ router.get(
   getAllForCurrentMonth
 );
 router.get("/marked-attendance-get-attendance", Middleware, getAttendance);
+router.get("/marked-attendance-get", Middleware, getAllAttendance);
 
 module.exports = router;

@@ -6,7 +6,7 @@ const {
   createDepartment,
   getAllDepartment,
   getAllDepartmentByBranchId,
-} = require("../controllers/Branch-Department");
+} = require("../controllers/Branch-Department-Designation");
 
 router.post("/department", Middleware, createDepartment);
 router.get("/department-get-all", Middleware, getAllDepartment);

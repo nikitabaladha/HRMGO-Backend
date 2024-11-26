@@ -2,7 +2,7 @@ const Appraisal = require("../../../models/Appraisal");
 
 async function deleteById(req, res) {
   try {
-    const { id } = req.params; // Get the appraisal ID from the route parameter
+    const { id } = req.params;
 
     // Find and delete the appraisal by its ID
     const appraisal = await Appraisal.findByIdAndDelete(id);

@@ -1,8 +1,8 @@
 const Indicator = require("../../../models/Indicator");
 const User = require("../../../models/User");
-const Branch = require("../../../models/Branch"); // Assuming Branch model exists
-const Department = require("../../../models/Department"); // Assuming Department model exists
-const Designation = require("../../../models/Designation"); // Assuming Designation model exists
+const Branch = require("../../../models/Branch");
+const Department = require("../../../models/Department");
+const Designation = require("../../../models/Designation");
 
 async function create(req, res) {
   try {

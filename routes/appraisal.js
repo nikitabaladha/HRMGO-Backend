@@ -9,7 +9,7 @@ const {
   appraisalGetById,
   appraisalDeleteById,
   updatedAppraisal,
-} = require("../controllers/Competency");
+} = require("../controllers/Performance");
 
 // Define routes
 router.post("/appraisal", Middleware, createAppraisal);
