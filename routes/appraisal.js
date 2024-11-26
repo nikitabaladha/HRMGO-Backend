@@ -7,10 +7,15 @@ const {
   createAppraisal,
   getAllAppraisal,
   appraisalGetById,
+  appraisalDeleteById,
+  updatedAppraisal,
 } = require("../controllers/Competency");
 
 // Define routes
 router.post("/appraisal", Middleware, createAppraisal);
 router.get("/appraisal", Middleware, getAllAppraisal);
 router.get("/appraisal/:id", Middleware, appraisalGetById);
+router.delete("/appraisal/:id", Middleware, appraisalDeleteById);
+router.put("/appraisal/:id", Middleware, updatedAppraisal);
+
 module.exports = router;

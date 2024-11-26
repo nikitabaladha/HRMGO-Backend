@@ -8,6 +8,8 @@ const getByQuery = require("./Indicator/getByQuery");
 const createAppraisal = require("./Appraisal/create");
 const getAllAppraisal = require("./Appraisal/getAll");
 const appraisalGetById = require("./Appraisal/getById");
+const appraisalDeleteById = require("./Appraisal/deleteById");
+const updatedAppraisal = require("./Appraisal/update");
 
 module.exports = {
   createIndicator,
@@ -20,4 +22,6 @@ module.exports = {
   createAppraisal,
   getAllAppraisal,
   appraisalGetById,
+  appraisalDeleteById,
+  updatedAppraisal,
 };
